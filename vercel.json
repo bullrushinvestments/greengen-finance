@@ -1,0 +1,145 @@
+interface BuildCommand {
+  command: string;
+  output?: string;
+}
+
+interface EnvTemplate {
+  [key: string]: string | undefined;
+}
+
+interface HeaderRule {
+  source: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface CacheStrategy {
+  urlPattern: string;
+  options: { [key: string]: any };
+}
+
+interface FrameworkSettings {
+  vercel?: { [key: string]: any };
+  netlify?: { [key: string]: any };
+}
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvTemplate;
+  headers: Array<HeaderRule>;
+  cacheStrategies: Array<CacheStrategy>;
+  frameworkSettings: FrameworkSettings;
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: "next build",
+    output: ".next"
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_STRIPE_KEY: process.env.NEXT_PUBLIC_STRIPE_KEY
+  },
+  headers: [
+    {
+      source: "/(.*)",
+      headers: [
+        { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains; preload" },
+        { key: "X-Frame-Options", value: "DENY" },
+        { key: "X-XSS-Protection", value: "1; mode=block" }
+      ]
+    }
+  ],
+  cacheStrategies: [
+    {
+      urlPattern: "/api/(.*)",
+      options: { immutable: false, maxAgeSeconds: 0 }
+    },
+    {
+      urlPattern: "/static/(.*)",
+      options: { immutable: true, maxAgeSeconds: 31536000 }
+    }
+  ],
+  frameworkSettings: {
+    vercel: {
+      buildCommand: "next build",
+      startCommand: "next start"
+    },
+    netlify: {
+      publish: ".next/*",
+      functions: "functions"
+    }
+  }
+};
+
+interface BuildCommand {
+  command: string;
+  output?: string;
+}
+
+interface EnvTemplate {
+  [key: string]: string | undefined;
+}
+
+interface HeaderRule {
+  source: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface CacheStrategy {
+  urlPattern: string;
+  options: { [key: string]: any };
+}
+
+interface FrameworkSettings {
+  vercel?: { [key: string]: any };
+  netlify?: { [key: string]: any };
+}
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvTemplate;
+  headers: Array<HeaderRule>;
+  cacheStrategies: Array<CacheStrategy>;
+  frameworkSettings: FrameworkSettings;
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: "next build",
+    output: ".next"
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_STRIPE_KEY: process.env.NEXT_PUBLIC_STRIPE_KEY
+  },
+  headers: [
+    {
+      source: "/(.*)",
+      headers: [
+        { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains; preload" },
+        { key: "X-Frame-Options", value: "DENY" },
+        { key: "X-XSS-Protection", value: "1; mode=block" }
+      ]
+    }
+  ],
+  cacheStrategies: [
+    {
+      urlPattern: "/api/(.*)",
+      options: { immutable: false, maxAgeSeconds: 0 }
+    },
+    {
+      urlPattern: "/static/(.*)",
+      options: { immutable: true, maxAgeSeconds: 31536000 }
+    }
+  ],
+  frameworkSettings: {
+    vercel: {
+      buildCommand: "next build",
+      startCommand: "next start"
+    },
+    netlify: {
+      publish: ".next/*",
+      functions: "functions"
+    }
+  }
+};

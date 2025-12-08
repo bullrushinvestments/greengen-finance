@@ -1,0 +1,109 @@
+import type { BuildCommand, EnvVariables, HeaderRule, SecurityHeaders } from './types'; // Assuming custom types are defined in a separate file
+
+interface RedirectRules {
+  from: string;
+  to: string;
+  status?: number; // Default is 301 if not specified
+}
+
+interface CachingStrategy {
+  matchPath: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface FrameworkSettings {
+  buildCommand: BuildCommand;
+  outputDirectory: string;
+  environmentVariables: EnvVariables;
+  redirectRules?: RedirectRules[];
+  securityHeaders?: SecurityHeaders;
+  cachingStrategies?: CachingStrategy[];
+}
+
+export const deployConfig: FrameworkSettings = {
+  buildCommand: 'next build',
+  outputDirectory: '.next',
+  environmentVariables: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_STRIPE_KEY: process.env.NEXT_PUBLIC_STRIPE_KEY,
+    DATABASE_URL: process.env.DATABASE_URL
+  },
+  redirectRules: [
+    { from: '/old-url', to: '/new-url' }
+  ],
+  securityHeaders: [
+    {
+      source: '/',
+      headers: [
+        { key: 'strict-transport-security', value: 'max-age=31536000; includeSubDomains; preload' },
+        { key: 'x-content-type-options', value: 'nosniff' },
+        { key: 'x-frame-options', value: 'DENY' },
+        { key: 'x-xss-protection', value: '1; mode=block' }
+      ]
+    }
+  ],
+  cachingStrategies: [
+    {
+      matchPath: '/api/*',
+      headers: [
+        { key: 'cache-control', value: 's-maxage=3600, stale-while-revalidate' },
+        { key: 'pragma', value: 'no-cache' }
+      ]
+    }
+  ]
+};
+
+import type { BuildCommand, EnvVariables, HeaderRule, SecurityHeaders } from './types'; // Assuming custom types are defined in a separate file
+
+interface RedirectRules {
+  from: string;
+  to: string;
+  status?: number; // Default is 301 if not specified
+}
+
+interface CachingStrategy {
+  matchPath: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface FrameworkSettings {
+  buildCommand: BuildCommand;
+  outputDirectory: string;
+  environmentVariables: EnvVariables;
+  redirectRules?: RedirectRules[];
+  securityHeaders?: SecurityHeaders;
+  cachingStrategies?: CachingStrategy[];
+}
+
+export const deployConfig: FrameworkSettings = {
+  buildCommand: 'next build',
+  outputDirectory: '.next',
+  environmentVariables: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_STRIPE_KEY: process.env.NEXT_PUBLIC_STRIPE_KEY,
+    DATABASE_URL: process.env.DATABASE_URL
+  },
+  redirectRules: [
+    { from: '/old-url', to: '/new-url' }
+  ],
+  securityHeaders: [
+    {
+      source: '/',
+      headers: [
+        { key: 'strict-transport-security', value: 'max-age=31536000; includeSubDomains; preload' },
+        { key: 'x-content-type-options', value: 'nosniff' },
+        { key: 'x-frame-options', value: 'DENY' },
+        { key: 'x-xss-protection', value: '1; mode=block' }
+      ]
+    }
+  ],
+  cachingStrategies: [
+    {
+      matchPath: '/api/*',
+      headers: [
+        { key: 'cache-control', value: 's-maxage=3600, stale-while-revalidate' },
+        { key: 'pragma', value: 'no-cache' }
+      ]
+    }
+  ]
+};
